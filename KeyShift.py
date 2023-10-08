@@ -54,8 +54,8 @@ Code from ChatGPT
 Made By Bank's : Thai translator H Game
 Link Discord : https://discord.gg/q6FkGCHv66
 
-โปรแกรมนี้ใช้เพื่อแยกไฟล์ที่ตรงกับคำค้นหาแล้วแยกไฟล์ออกมาไว้ในโฟลเดอร์
-This program is used to extract files that match a search term and place them in a folder.
+โปรแกรมนี้ใช้เพื่อคัดแยกไฟล์ที่ตรงกับคำค้นหาแล้วย้ายไฟล์นั้นออกมาไว้ในโฟลเดอร์ใหม่
+This program is used to extract files that match a search term and move them into a new folder.
 
 How to use on PC
 Just input Folder paths, and the file extension
