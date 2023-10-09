@@ -1,5 +1,6 @@
 import os
 import shutil
+import re
 import sys
 import subprocess
 
@@ -35,7 +36,7 @@ except ImportError:
     subprocess.run([sys.executable, "-m", "pip", "install", "tqdm"])
     from tqdm import tqdm
 
-def get_valid_folder_path():
+def get_valid_folder_path(folder_paths):
     while True:
         folder_path = input("Please enter the folder path or type 'done' to finish: ")
         if folder_path.lower() == 'done':
@@ -58,39 +59,34 @@ def sanitize_folder_name(keyword):
         return "WithKeyword"
     return f"With Keyword ({keyword})"
 
-print("""
+def main_program():
+    print("""
 Python version 3.11.5
 Code from ChatGPT
 Made By Bank's : Thai translator H Game
 Link Discord : https://discord.gg/q6FkGCHv66
-
-โปรแกรมนี้ใช้เพื่อคัดแยกไฟล์ที่ตรงกับคำค้นหาแล้วย้ายไฟล์นั้นออกมาไว้ในโฟลเดอร์ใหม่
-This program is used to extract files that match a search term and move them into a new folder.
-
+โปรแกรมนี้ใช้เพื่อแยกไฟล์ที่ตรงกับคำค้นหาแล้วแยกไฟล์ออกมาไว้ในโฟลเดอร์
+This program is used to extract files that match a search term and place them in a folder.
 How to use on PC
 Just input Folder paths, and the file extension
-
 วิธีใช้บนคอม
 เพียงแค่ป้อนตำแหน่งของโฟลเดอร์ และนามสกุลของไฟล์นั้น ๆ 
-
 How to use in moblie version
 Please run in Pydroid 3 - IDE for Python 3
 Then Just input Folder paths and the file extension
 If you put flie in Pyroid3 Folder the path is [/storage/emulated/0/Documents/Pydroid3/(Put your folder name here)"]
-
 วิธีใช้บนมือถือ
 ให้รันบนPydroid 3 - IDE for Python 3
 ถ้าเอาไฟล์ดิบที่ต้องการไว้ในโฟลเดอร์  Pyroid3 ตำแหน่งไฟล์คือ [/storage/emulated/0/Documents/Pydroid3/(ใส่ชื่อโฟลเดอร์ตรงนี้)]
 เพียงแค่ป้อนตำแหน่งของโฟลเดอร์ และนามสกุลของไฟล์นั้น ๆ 
 """
-)
-
-while True:
+    )
+    
     # Get folder paths
     folder_paths = set()
 
     while True:
-        folder_path = get_valid_folder_path()
+        folder_path = get_valid_folder_path(folder_paths) # Pass folder_paths as an argument
         if folder_path is None:
             break
         if folder_path in folder_paths:
@@ -123,14 +119,17 @@ while True:
                 file_path = os.path.join(folder_path, filename)
                 files_to_search.append(file_path)
 
-    # Loop through each file in files_to_search with a progress bar
+    # Check for the pattern 'string data = "..."' in the content
     for file_path in tqdm(files_to_search, desc="Searching files", unit="file"):
         with open(file_path, 'r', encoding='utf8') as f:
             content = f.read()
-
-        if keyword in content:
+        if re.search(r'string data = ".*?"', content):
             new_file_path = os.path.join(new_folder_path, os.path.basename(file_path))
             shutil.move(file_path, new_file_path)
+
+# Main loop to repeat the process
+while True:
+    main_program()
 
     # Ask user if they want to repeat the process
     repeat = input("Do you want to repeat the process? (yes/no): ").lower()
