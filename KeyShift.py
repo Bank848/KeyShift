@@ -48,6 +48,16 @@ def get_valid_folder_path():
         else:
             print("Invalid folder path. Please try again.")
 
+def sanitize_folder_name(keyword):
+    # List of invalid characters for folder names on Windows
+    invalid_chars = ['<', '>', ':', '"', '/', '\\', '|', '?', '*']
+    for char in invalid_chars:
+        keyword = keyword.replace(char, '')
+    # If after removing invalid chars the keyword becomes empty, use a default name
+    if not keyword:
+        return "WithKeyword"
+    return f"With Keyword ({keyword})"
+
 print("""
 Python version 3.11.5
 Code from ChatGPT
@@ -97,7 +107,7 @@ while True:
     keyword = input("Enter the keyword to search for: ")
 
     # Set up the new folder for files containing the keyword
-    new_folder_name = f"With Keyword ({keyword})"
+    new_folder_name = sanitize_folder_name(keyword)
     new_folder_path = os.path.join(os.path.dirname(folder_paths[0]), new_folder_name)
 
     # Create the new folder if it doesn't exist
